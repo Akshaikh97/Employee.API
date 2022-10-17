@@ -18,7 +18,7 @@ namespace Employee.API.Repositories {
             connection();
             var EmpList = new List<Employe>();
 
-            SqlCommand com = new SqlCommand("SP_GETALL", con);
+            SqlCommand com = new SqlCommand("SP_SELECT", con);
             com.CommandType = CommandType.StoredProcedure;
             SqlDataAdapter da = new SqlDataAdapter(com);
             DataTable dt = new DataTable();
@@ -55,7 +55,7 @@ namespace Employee.API.Repositories {
             Employe obj = null;
             try {
                 connection();
-                SqlCommand com = new SqlCommand("SP_GETBY", con);
+                SqlCommand com = new SqlCommand("SP_SELECTBY", con);
                 com.CommandType = CommandType.StoredProcedure;
                 com.Parameters.AddWithValue("@EmployeeId", EmployeeId);
 
@@ -116,31 +116,37 @@ namespace Employee.API.Repositories {
 
 
         }
-        public bool UpdateEmployee(Employe obj) {
+        public bool UpdateEmployee(Employe obj, int EmployeeId) {
 
-            connection();
-            SqlCommand com = new SqlCommand("SP_UPDATE", con);
+            try {
+                connection();
+                SqlCommand com = new SqlCommand("SP_UPDATE", con);
 
-            com.CommandType = CommandType.StoredProcedure;
-            com.Parameters.AddWithValue("@EmployeeId", obj.EmployeeId);
-            com.Parameters.AddWithValue("@Name", obj.Name);
-            com.Parameters.AddWithValue("@Address", obj.Address);
-            com.Parameters.AddWithValue("@City", obj.City);
-            com.Parameters.AddWithValue("@State", obj.State);
-            com.Parameters.AddWithValue("@Country", obj.Country);
-            com.Parameters.AddWithValue("@Mobile", obj.Mobile);
-            com.Parameters.AddWithValue("@Email", obj.Email);
-            com.Parameters.AddWithValue("@Gender", obj.Gender);
-            com.Parameters.AddWithValue("@Dob", obj.Dob);
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@EmployeeId", EmployeeId);
+                com.Parameters.AddWithValue("@Name", obj.Name);
+                com.Parameters.AddWithValue("@Address", obj.Address);
+                com.Parameters.AddWithValue("@City", obj.City);
+                com.Parameters.AddWithValue("@State", obj.State);
+                com.Parameters.AddWithValue("@Country", obj.Country);
+                com.Parameters.AddWithValue("@Mobile", obj.Mobile);
+                com.Parameters.AddWithValue("@Email", obj.Email);
+                com.Parameters.AddWithValue("@Gender", obj.Gender);
+                com.Parameters.AddWithValue("@Dob", obj.Dob);
 
-            con.Open();
-            int i = com.ExecuteNonQuery();
-            con.Close();
-            if (i >= 1) {
+                con.Open();
+                int i = com.ExecuteNonQuery();
+                con.Close();
 
-                return true;
-            } else {
-                return false;
+                if (i >= 1) {
+
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (Exception ex) {
+
+                throw ex;
             }
         }
         public bool DeleteEmployee(int EmployeeId) {

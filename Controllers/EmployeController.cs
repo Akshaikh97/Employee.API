@@ -9,9 +9,9 @@ using System.Web.Http;
 
 namespace Employee.API.Controllers {
 
-    [RoutePrefix("api/employee")]
-    public class EmployeeController : ApiController {
-
+    [RoutePrefix("api/Employee")]
+    public class EmployeeController : ApiController 
+    {
         private readonly IEmployeeRepository _employeeRepository;
         public EmployeeController(IEmployeeRepository employeeRepository) {
             _employeeRepository = employeeRepository;
@@ -22,7 +22,7 @@ namespace Employee.API.Controllers {
         public IHttpActionResult GetEmployees() {
             return Ok(_employeeRepository.GetEmployees().ToList());
         }
-        [HttpGet, Route("EmployeeId:int")]
+        [HttpGet, Route("{EmployeeId}")]
         public IHttpActionResult GetEmployee(int EmployeeId) {
             return Ok(_employeeRepository.GetEmployee(EmployeeId));
         }
@@ -30,11 +30,13 @@ namespace Employee.API.Controllers {
         public IHttpActionResult AddEmploye([FromBody] Employe employe) {
             return Ok(_employeeRepository.AddEmployee(employe));
         }
-        [HttpPut, Route("UpdateEmpoloyee")]
-        public IHttpActionResult UpdateEmployee(Employe employe) {
-            return Ok(_employeeRepository.UpdateEmployee(employe));
+        [HttpPut, Route("UpdateEmployee")]
+        public IHttpActionResult UpdateEmployee(Employe employe, int EmployeeId) {
+            return Ok(_employeeRepository.UpdateEmployee(employe, EmployeeId));
         }
         [HttpDelete, Route("DeleteEmployee")]
-        public void Delete(int EmployeeId) => _employeeRepository.DeleteEmployee(EmployeeId);
+        public IHttpActionResult Delete(int EmployeeId) {
+            return Ok(_employeeRepository.DeleteEmployee(EmployeeId));
+        }
     }
 }

@@ -6,7 +6,7 @@ namespace Employee.API.Repositories {
         List<Employe> GetEmployees();
         Employe GetEmployee(int EmployeeId);
         bool AddEmployee(Employe obj);
-        bool UpdateEmployee(Employe obj);
+        bool UpdateEmployee(Employe obj, int EmployeeId);
         bool DeleteEmployee(int EmployeeId);
     }
 }
